@@ -1,19 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import UploadPage from './pages/UploadPage'
 import InterviewPage from './pages/InterviewPage'
 import ResultsPage from './pages/ResultsPage'
 import './index.css'
 
 function App() {
-  const [page, setPage] = useState('upload')
-  const [sessionData, setSessionData] = useState({
-    sessionId: null,
-    question: null,
-    questionNumber: 1,
-    totalQuestions: 5,
-    role: '',
+  const [page, setPage] = useState(() => localStorage.getItem('interviewer_page') || 'upload')
+  const [sessionData, setSessionData] = useState(() => {
+    const saved = localStorage.getItem('interviewer_session')
+    return saved ? JSON.parse(saved) : {
+      sessionId: null,
+      question: null,
+      questionNumber: 1,
+      totalQuestions: 5,
+      role: '',
+    }
   })
-  const [results, setResults] = useState(null)
+  const [results, setResults] = useState(() => {
+    const saved = localStorage.getItem('interviewer_results')
+    return saved ? JSON.parse(saved) : null
+  })
+
+  // Persist state to localStorage
+  useEffect(() => {
+    localStorage.setItem('interviewer_page', page)
+  }, [page])
+
+  useEffect(() => {
+    localStorage.setItem('interviewer_session', JSON.stringify(sessionData))
+  }, [sessionData])
+
+  useEffect(() => {
+    localStorage.setItem('interviewer_results', JSON.stringify(results))
+  }, [results])
 
   const handleUploadComplete = (data) => {
     setSessionData(data)
@@ -30,6 +49,9 @@ function App() {
   }
 
   const handleRestart = () => {
+    localStorage.removeItem('interviewer_page')
+    localStorage.removeItem('interviewer_session')
+    localStorage.removeItem('interviewer_results')
     setSessionData({
       sessionId: null,
       question: null,
