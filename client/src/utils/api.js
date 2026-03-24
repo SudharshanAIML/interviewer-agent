@@ -5,7 +5,9 @@ const normalizeBaseUrl = (baseUrl) => {
 
 const getConfiguredBaseUrl = () => {
   return normalizeBaseUrl(
-    import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BACKEND_URL
+    import.meta.env.VITE_API_BASE_URL ||
+      import.meta.env.VITE_BACKEND_URL ||
+      import.meta.env.VITE_DEV_API_PROXY_TARGET
   )
 }
 
