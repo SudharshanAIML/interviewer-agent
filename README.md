@@ -63,6 +63,26 @@ Important:
 
 ---
 
+## 4.1) Configure frontend API URL (for separate deployment)
+
+Create `client/.env` for local development:
+
+```env
+VITE_DEV_API_PROXY_TARGET=http://localhost:5000
+```
+
+Optional: if your frontend and backend are deployed on different domains, set this in your frontend environment:
+
+```env
+VITE_API_BASE_URL=https://your-backend-domain.com
+```
+
+Behavior:
+- If `VITE_API_BASE_URL` is set, frontend requests go directly to that backend URL.
+- If `VITE_API_BASE_URL` is not set, frontend uses relative `/api/...` calls (works with Vite proxy in local dev).
+
+---
+
 ## 5) Install dependencies
 
 Run these commands from project root:
@@ -122,10 +142,11 @@ Open the URL shown in terminal (usually `http://localhost:5173`).
 ### Frontend opens but API fails
 - Make sure backend is running on port `5000`
 - Confirm frontend is running from `client/` with `npm run dev`
+- If frontend/backend are on different domains, set `VITE_API_BASE_URL` in frontend env
 
 ### Port already in use
 - Change `PORT` in `server/.env` (for example `PORT=5001`)
-- If changed, also update proxy target in `client/vite.config.js`
+- If changed, set `VITE_DEV_API_PROXY_TARGET` in `client/.env` (for example `http://localhost:5001`)
 
 ---
 

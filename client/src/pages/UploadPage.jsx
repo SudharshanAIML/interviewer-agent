@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { buildApiUrl } from '../utils/api'
 
 export default function UploadPage({ onComplete }) {
   const [role, setRole] = useState('')
@@ -57,7 +58,7 @@ export default function UploadPage({ onComplete }) {
         formData.append('resumeText', resumeText.trim())
       }
 
-      const res = await fetch('/api/upload', {
+      const res = await fetch(buildApiUrl('/api/upload'), {
         method: 'POST',
         body: formData,
       })

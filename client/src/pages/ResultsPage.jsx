@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { buildApiUrl } from '../utils/api'
 
 export default function ResultsPage({ sessionId, role, results, onResultsLoaded, onRestart }) {
   const [loading, setLoading] = useState(!results)
@@ -10,7 +11,7 @@ export default function ResultsPage({ sessionId, role, results, onResultsLoaded,
 
     const fetchResults = async () => {
       try {
-        const res = await fetch('/api/results', {
+        const res = await fetch(buildApiUrl('/api/results'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sessionId }),
