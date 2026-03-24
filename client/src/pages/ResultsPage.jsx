@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { buildApiUrl } from '../utils/api'
+import { apiRequest } from '../utils/api'
 
 export default function ResultsPage({ sessionId, role, results, onResultsLoaded, onRestart }) {
   const [loading, setLoading] = useState(!results)
@@ -11,17 +11,11 @@ export default function ResultsPage({ sessionId, role, results, onResultsLoaded,
 
     const fetchResults = async () => {
       try {
-        const res = await fetch(buildApiUrl('/api/results'), {
+        const json = await apiRequest('/api/results', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sessionId }),
-        })
-
-        const json = await res.json()
-
-        if (!res.ok) {
-          throw new Error(json.error || 'Failed to load results')
-        }
+        }, 'Failed to load results')
 
         setData(json.results)
         onResultsLoaded(json.results)

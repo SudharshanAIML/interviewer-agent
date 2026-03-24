@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import VoiceRecorder from '../components/VoiceRecorder'
 import { speak, stopSpeaking } from '../utils/speech'
-import { buildApiUrl } from '../utils/api'
+import { apiRequest } from '../utils/api'
 
 export default function InterviewPage({ sessionData, onComplete }) {
   const [question, setQuestion] = useState(sessionData.question)
@@ -47,20 +47,14 @@ export default function InterviewPage({ sessionData, onComplete }) {
     stopSpeaking()
 
     try {
-      const res = await fetch(buildApiUrl('/api/interview'), {
+      const data = await apiRequest('/api/interview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sessionId: sessionData.sessionId,
           answer: finalAnswer.trim(),
         }),
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit answer')
-      }
+      }, 'Failed to submit answer')
 
       if (data.completed) {
         onComplete(sessionData.sessionId)

@@ -143,6 +143,7 @@ Open the URL shown in terminal (usually `http://localhost:5173`).
 - Make sure backend is running on port `5000`
 - Confirm frontend is running from `client/` with `npm run dev`
 - If frontend/backend are on different domains, set `VITE_API_BASE_URL` in frontend env
+- If you see `JSON.parse: unexpected character`, frontend is likely receiving HTML from the frontend host instead of backend JSON; set `VITE_API_BASE_URL` and redeploy frontend
 
 ### Port already in use
 - Change `PORT` in `server/.env` (for example `PORT=5001`)
